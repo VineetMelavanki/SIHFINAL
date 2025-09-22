@@ -4,18 +4,30 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+// Removed selects to make inputs user-defined
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { Link } from "react-router-dom";
-import { EXAMPLE_COLLECTIONS, COLLECTOR_PROFILES, QUALITY_GRADES, HARVEST_SEASONS } from "@/data/farmer-examples";
+// Removed example data to make the dashboard user-defined
 
 const CollectorDashboard = () => {
   const { toast } = useToast();
   const [isRecording, setIsRecording] = useState(false);
-  const [collections, setCollections] = useState(EXAMPLE_COLLECTIONS.slice(0, 8)); // Show recent collections
-  const [selectedCollector] = useState(COLLECTOR_PROFILES[0]); // Current logged-in collector
+  const [collections, setCollections] = useState<any[]>([]); // Start with no records
+  const [selectedCollector, setSelectedCollector] = useState({
+    id: "USER-COLLECTOR-001",
+    name: "",
+    location: "",
+    specializations: [] as string[],
+    experience: "",
+    certification: "",
+    cooperative: "",
+    totalCollections: 0,
+    averageQuality: "",
+    sustainabilityScore: 0,
+    languages: [] as string[]
+  });
 
   const [newCollection, setNewCollection] = useState({
     species: "",
@@ -35,7 +47,7 @@ const CollectorDashboard = () => {
     }
 
     // Simulate GPS location capture
-    const mockLocation = selectedCollector.location;
+    const mockLocation = selectedCollector.location || "";
     const mockCoordinates = collections[0]?.coordinates || "18.5204, 73.8567";
     
     const record = {
@@ -115,15 +127,17 @@ const CollectorDashboard = () => {
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div>
-                  <CardTitle className="text-xl">Welcome, {selectedCollector.name}</CardTitle>
-                  <CardDescription>{selectedCollector.location} • {selectedCollector.experience} experience</CardDescription>
+                  <CardTitle className="text-xl">Welcome, {selectedCollector.name || "Collector"}</CardTitle>
+                  <CardDescription>
+                    {(selectedCollector.location || "Set your location")} • {(selectedCollector.experience || "Set your experience")}
+                  </CardDescription>
                 </div>
                 <div className="text-right">
                   <Badge className="bg-primary/20 text-primary mb-2">
-                    {selectedCollector.certification}
+                    {selectedCollector.certification || "Add certification"}
                   </Badge>
                   <p className="text-sm text-muted-foreground">
-                    {selectedCollector.cooperative}
+                    {selectedCollector.cooperative || "Add cooperative/organization"}
                   </p>
                 </div>
               </div>
@@ -132,20 +146,56 @@ const CollectorDashboard = () => {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div>
                   <span className="text-sm text-muted-foreground">Total Collections:</span>
-                  <p className="text-xl font-bold text-primary">{selectedCollector.totalCollections}</p>
+                  <p className="text-xl font-bold text-primary">{collections.length}</p>
                 </div>
                 <div>
                   <span className="text-sm text-muted-foreground">Average Quality:</span>
-                  <p className="text-xl font-bold text-accent">{selectedCollector.averageQuality}</p>
+                  <p className="text-xl font-bold text-accent">{selectedCollector.averageQuality || "-"}</p>
                 </div>
                 <div>
                   <span className="text-sm text-muted-foreground">Sustainability Score:</span>
-                  <p className="text-xl font-bold text-green-600">{selectedCollector.sustainabilityScore}%</p>
+                  <p className="text-xl font-bold text-green-600">{selectedCollector.sustainabilityScore || 0}%</p>
                 </div>
                 <div>
                   <span className="text-sm text-muted-foreground">Specializations:</span>
-                  <p className="text-sm font-medium">{selectedCollector.specializations.join(", ")}</p>
+                  <p className="text-sm font-medium">{selectedCollector.specializations.length ? selectedCollector.specializations.join(", ") : "Add specializations"}</p>
                 </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Collector Profile Setup */}
+        <div className="mb-8">
+          <Card className="shadow-soft">
+            <CardHeader>
+              <CardTitle className="text-lg">Set Up Your Profile</CardTitle>
+              <CardDescription>Provide your details to personalize the dashboard</CardDescription>
+            </CardHeader>
+            <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="name">Name</Label>
+                <Input id="name" value={selectedCollector.name} onChange={(e) => setSelectedCollector({ ...selectedCollector, name: e.target.value })} placeholder="Your name" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="location">Location</Label>
+                <Input id="location" value={selectedCollector.location} onChange={(e) => setSelectedCollector({ ...selectedCollector, location: e.target.value })} placeholder="City, State" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="experience">Experience</Label>
+                <Input id="experience" value={selectedCollector.experience} onChange={(e) => setSelectedCollector({ ...selectedCollector, experience: e.target.value })} placeholder="e.g., 10 years" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="cert">Certification</Label>
+                <Input id="cert" value={selectedCollector.certification} onChange={(e) => setSelectedCollector({ ...selectedCollector, certification: e.target.value })} placeholder="License/permit" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="coop">Cooperative/Organization</Label>
+                <Input id="coop" value={selectedCollector.cooperative} onChange={(e) => setSelectedCollector({ ...selectedCollector, cooperative: e.target.value })} placeholder="Optional" />
+              </div>
+              <div className="space-y-2 md:col-span-3">
+                <Label htmlFor="specs">Specializations (comma separated)</Label>
+                <Input id="specs" value={selectedCollector.specializations.join(", ")} onChange={(e) => setSelectedCollector({ ...selectedCollector, specializations: e.target.value.split(",").map(s => s.trim()).filter(Boolean) })} placeholder="e.g., Ashwagandha, Tulsi" />
               </div>
             </CardContent>
           </Card>
@@ -167,20 +217,12 @@ const CollectorDashboard = () => {
               <CardContent className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="species">Herb Species *</Label>
-                  <Select value={newCollection.species} onValueChange={(value) => 
-                    setNewCollection({...newCollection, species: value})
-                  }>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select herb species" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {Object.keys(HARVEST_SEASONS).map((herb) => (
-                        <SelectItem key={herb} value={herb}>
-                          {herb} - {HARVEST_SEASONS[herb as keyof typeof HARVEST_SEASONS]}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <Input
+                    id="species"
+                    placeholder="Enter herb species"
+                    value={newCollection.species}
+                    onChange={(e) => setNewCollection({ ...newCollection, species: e.target.value })}
+                  />
                 </div>
 
                 <div className="space-y-2">
@@ -197,20 +239,12 @@ const CollectorDashboard = () => {
 
                 <div className="space-y-2">
                   <Label htmlFor="quality">Quality Grade</Label>
-                  <Select value={newCollection.quality} onValueChange={(value) => 
-                    setNewCollection({...newCollection, quality: value})
-                  }>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select quality" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {Object.entries(QUALITY_GRADES).map(([grade, info]) => (
-                        <SelectItem key={grade} value={grade}>
-                          {grade} - {info.description}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <Input
+                    id="quality"
+                    placeholder="e.g., Premium, Good, Standard"
+                    value={newCollection.quality}
+                    onChange={(e) => setNewCollection({ ...newCollection, quality: e.target.value })}
+                  />
                 </div>
 
                 <div className="space-y-2">
