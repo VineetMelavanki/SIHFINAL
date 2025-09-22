@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # AyurTrace - Blockchain Herbal Traceability System
 
 ## Smart India Hackathon 2024 - Ministry of AYUSH
@@ -239,3 +240,6 @@ Developed for Smart India Hackathon 2024, addressing the critical need for trans
 ---
 
 **Note**: This is a proof-of-concept implementation. Production deployment would require additional security measures, regulatory approvals, and integration with actual blockchain infrastructure.
+=======
+# SIHFINAL
+>>>>>>> 54ee8447ed28a4133ed1d15e416608fcbf32bb82
