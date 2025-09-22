@@ -34,15 +34,17 @@ const Index = () => {
 
       {/* Hero Section */}
       <section className="relative bg-gradient-herbal text-primary-foreground py-24 overflow-hidden">
+        {/* Dark/green gradient overlay to keep headings readable */}
         <div className="absolute inset-0 bg-gradient-forest opacity-90"></div>
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-20"
+        {/* Background image from assets; lower opacity keeps UI text visible */}
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-25"
           style={{ backgroundImage: `url(${heroImage})` }}
         ></div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <Badge className="mb-6 bg-primary-glow/20 text-primary-foreground border-primary-glow/30">
-              Smart India Hackathon 2024
+              Smart India Hackathon 2025
             </Badge>
             <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
               Blockchain-Powered
@@ -62,7 +64,7 @@ const Index = () => {
                 </Button>
               </Link>
               <Link to="/collector">
-                <Button variant="outline" size="lg" className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10">
+                <Button size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground shadow-glow">
                   Start Collecting <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
@@ -214,8 +216,8 @@ const Index = () => {
               <Leaf className="h-6 w-6 text-primary" />
               <span className="text-lg font-semibold">AyurTrace</span>
             </div>
-            <p className="text-muted-foreground">
-              © 2024 Smart India Hackathon - Ministry of AYUSH Blockchain Solution
+            <p className="text-muted-foreground ml-auto">
+              © 2025 Smart India Hackathon - Ministry of AYUSH Blockchain Solution
             </p>
           </div>
         </div>
