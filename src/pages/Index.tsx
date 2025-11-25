@@ -43,9 +43,6 @@ const Index = () => {
         ></div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
-            <Badge className="mb-6 bg-primary-glow/20 text-primary-foreground border-primary-glow/30">
-              Smart India Hackathon 2025
-            </Badge>
             <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
               Blockchain-Powered
               <br />
@@ -217,7 +214,7 @@ const Index = () => {
               <span className="text-lg font-semibold">AyurTrace</span>
             </div>
             <p className="text-muted-foreground ml-auto">
-              © 2025 Smart India Hackathon - Ministry of AYUSH Blockchain Solution
+              Ayurtrace pvt ltd
             </p>
           </div>
         </div>
